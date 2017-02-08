@@ -1,0 +1,43 @@
+Dumpster - say goodbye to the Q Worker!
+by Todd Moses
+
+                             \         .  ./
+                           \      .:";'.:.."   /
+                               (M^^.^~~:.'").
+                         -   (/  .    . . \ \)  -
+ O                          ((| :. ~ ^  :. .|))
+ |\\                     -   (\- |  \ /  |  /)  -
+ |  T                         -\  \     /  /-
+/ \[_]..........................\  \   /  /
+
+=======================================================================================
+Dumpster replaces the data entry part of the Q Worker to facilitate a much faster insert
+of event data into the Beacon, Device, and Event tables.
+=======================================================================================
+
+The following files are included:
+1. Dumpster.go
+2. DumpBulk.sql
+
+Dumpster.go ===========================================================================
+
+A Go application that takes csv files from S3 and dumps them into a temp table on PostgreSQL.
+If this table does not exist it creates it. It runs a worker for each hour so that the
+entire time to process is just a little greater than a single hour.
+
+On start, Dumpster destroys its table then re-creates it. On end, Dumpster adds an index to the
+newly created and filed table.
+
+Environmental Variables:
+export NKT_BucketName="qevents"
+export NKT_TableName="dumpday"
+export NKT_Hours="24"
+export NKT_AwsPublic="AKIAI7JTVIMA3WGFLYIQ"
+export NKT_AwsPrivate="IeVM/uqxpsK7Lmd3d/1Jx5gv+xqmqL7hmZ8hnuw3"
+export NKT_DbConnection="user=nktProdMaster password=awe77Production host=nearkat-prod2.chpknvzl4nm9.us-east-1.rds.amazonaws.com port=5432 dbname=Nearkat sslmode=disable"
+
+TableName is the name of the Table Dumpster can destroy and re-create.
+Hours is the number of hours to get data for, starting with the beginning of the day.
+This means a setting of 2 would start at 00:00:00 and got to 02:00:00. By default this
+value is 24 hours for an entire day.
+
