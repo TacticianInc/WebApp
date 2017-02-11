@@ -150,7 +150,7 @@ class Add extends CI_Controller {
 		// get int for md5 of case id
 		$cid = $this->Cases->get_caseid_by_md5($case_id);
 
-		$db_result = $this->Report->add_new_report($user_id,$case_id,$name);
+		$db_result = $this->Report->add_new_report($user_id,$cid,$name);
 		if ($db_result['result']) {
 
 			$this->output->set_status_header('200');

@@ -228,7 +228,7 @@ if (!function_exists('report_script'))
                 $script = $script."retValue+='<hr>';";
 
                 // redaction
-                $script = $script."retValue+='<p>Redaction Settings.</p>';";
+                //$script = $script."retValue+='<p>Redaction Settings.</p>';";
 
                 $script = $script."retValue+='<div class=\"form-group\">';";
                 $script = $script."retValue+='<div class=\"col-sm-12\" style=\"text-align:right;\">';";

@@ -123,13 +123,13 @@ if (!function_exists('build_register_email_message')) {
                 $message = $message."To do so, please click on or paste the following into a web browser: ".$url." ".$new_line.$new_line;
                 $message = $message."Then just sign in as normal.".$new_line.$new_line;
                 
-                $signature = "<hr>".$new_line;
-                $signature = $signature."Sincerely,".$new_line;
-                $signature = $signature."The Tactician Team".$new_line;
-                $signature = $signature."http://tacticiansoftware.com".$new_line;
+                $message = $message.$new_line;
+                $message = $message."Sincerely,".$new_line;
+                $message = $message."The Tactician Team".$new_line;
+                $message = $message."http://tacticianinc.com".$new_line;
 
                 $ret_value['result'] = TRUE;
-                $ret_value['message'] = build_html_message($title, $message, $signature, "");
+                $ret_value['message'] = $message;
 
                 return $ret_value;
         }
@@ -163,10 +163,10 @@ if (!function_exists('build_guest_invitation_email_message'))
                 $message = $message."To accept, click on or paste the following into a web browser: ".$url." ".$new_line.$new_line;
                 $message = $message."Then just complete the short form.".$new_line.$new_line;
                 
-                $signature = "<hr>".$new_line;
-                $signature = $signature."Sincerely,".$new_line;
-                $signature = $signature."The Tactician Team".$new_line;
-                $signature = $signature."http://tacticiansoftware.com".$new_line;
+                $message = $message.$new_line;
+                $message = $message."Sincerely,".$new_line;
+                $message = $message."The Tactician Team".$new_line;
+                $message = $message."http://tacticianinc.com".$new_line;
 
                 $ret_value['result'] = TRUE;
                 $ret_value['message'] = $message;
@@ -199,13 +199,13 @@ if (!function_exists('build_guest_register_email_message'))
                 $message = $message."Please click on or paste the following into a web browser: ".$url." ".$new_line.$new_line;
                 $message = $message."Then just sign in as normal.".$new_line.$new_line;
                 
-                $signature = "<hr>".$new_line;
-                $signature = $signature."Sincerely,".$new_line;
-                $signature = $signature."The Tactician Team".$new_line;
-                $signature = $signature."http://tacticiansoftware.com".$new_line;
+                $message = $message.$new_line;
+                $message = $message."Sincerely,".$new_line;
+                $message = $message."The Tactician Team".$new_line;
+                $message = $message."http://tacticianinc.com".$new_line;
 
                 $ret_value['result'] = TRUE;
-                $ret_value['message'] = build_html_message($title, $message, $signature, "");
+                $ret_value['message'] = $message;
 
                 return $ret_value;
     }

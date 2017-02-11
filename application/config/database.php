@@ -46,24 +46,24 @@
 */
 
 $active_group = 'default';
-$active_record = FALSE;
+$active_record = TRUE;
 
-$db['default']['hostname'] = 'tactician.cskk4zukivak.us-west-2.rds.amazonaws.com';
-$db['default']['username'] = 'TBrianRusty';
-$db['default']['password'] = 'Ausgang52';
-$db['default']['database'] = 'tactician_main';
+$db['default']['hostname'] = $_SERVER['RDS_HOSTNAME'];
+$db['default']['username'] = $_SERVER['RDS_USERNAME'];
+$db['default']['password'] = $_SERVER['RDS_PASSWORD'];
+$db['default']['database'] = $_SERVER['RDS_DB_NAME'];
+$db['default']['port'] = $_SERVER['RDS_PORT'];
 $db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = '';
-$db['default']['pconnect'] = TRUE;
+$db['default']['pconnect'] = FALSE;
 $db['default']['db_debug'] = TRUE;
 $db['default']['cache_on'] = FALSE;
 $db['default']['cachedir'] = '';
 $db['default']['char_set'] = 'utf8';
 $db['default']['dbcollat'] = 'utf8_general_ci';
 $db['default']['swap_pre'] = '';
-$db['default']['autoinit'] = FALSE;
+$db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
-$db['default']['port'] = 3306;
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */
