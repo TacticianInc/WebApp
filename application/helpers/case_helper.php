@@ -3558,13 +3558,13 @@ if ($is_team_lead || (isset($is_admin) && ($is_admin == 1 || $is_admin == TRUE))
                     $script = $script."postData('".site_url("edit/interview_approve")."',data,null,function(resp){";
                     $script = $script."if(resp.result){";
                         // handle update
-                        //$script = $script."$('.chk_intapp').each(function() {";
-                        //    $script = $script."if ($(this).attr('data') == id){";
-                        //        $script = $script."$(this).attr('checked','checked');";
-                        //    $script = $script."}";
-                        //$script = $script."});";
+                        $script = $script."$('.chk_intapp').each(function() {";
+                            $script = $script."if ($(this).attr('data') == id){";
+                                $script = $script."$(this).prop('checked', true);";
+                            $script = $script."}";
+                        $script = $script."});";
                         $script = $script."$('.close').click();";
-                        $script = $script."location.reload();";
+                        //$script = $script."location.reload();";
                     $script = $script."}else{";
                     $script = $script."alert('An Error Occured: '+resp.msg);";
                     $script = $script."return false;";
