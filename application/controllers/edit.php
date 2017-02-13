@@ -1287,8 +1287,9 @@ class Edit extends CI_Controller {
 				$from_name = "Tactician Software";
 				$from_email = "noreply@tacticianinc.com";
 
-				$this->sendmail->send_email($message_response['message'], $subject, $from_name, $from_email, $to, FALSE, 'mtmosestn@gmail.com');
-
+				//$this->sendmail->send_email($message_response['message'], $subject, $from_name, $from_email, $to, FALSE, 'mtmosestn@gmail.com');
+				$this->sendmail->send_email_ses($message_response['message'], $subject, $email);
+				
 				$this->output->set_status_header('200');
 				echo "{\"result\":".$db_result['result'].", \"num_tries\":".$db_result['num_tries']."}";
 
