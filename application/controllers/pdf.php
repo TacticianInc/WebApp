@@ -73,8 +73,9 @@ class Pdf extends CI_Controller {
 			$int_date = date('d/m/Y', strtotime($intv["date_occured"]));
 			$int_desc = $intv["description"];
 			$int_location = $intv["location"];
+			$int_attachments = $intv["attachments"];
 
-			$this->build_interview_page($this->fpdf,$int_name,$int_agent,$int_date,$int_desc,$int_title,$int_emp,$int_street,$int_city,$int_state,$int_zip,$int_dob,$int_notes,$int_location);
+			$this->build_interview_page($this->fpdf,$int_name,$int_agent,$int_date,$int_desc,$int_title,$int_emp,$int_street,$int_city,$int_state,$int_zip,$int_dob,$int_notes,$int_location,$int_attachments);
 		}
 
 		$this->fpdf->SetAutoPageBreak(true, 0);
@@ -330,7 +331,7 @@ class Pdf extends CI_Controller {
 		$fpdf->Cell($width, 4, 'Page ' . $fpdf->PageNo(), 0, 1);
 	}
 
-	private function build_interview_page(&$fpdf,$name,$agent,$date,$desc,$title,$emp,$street,$city,$state,$zip,$dob,$notes,$location)
+	private function build_interview_page(&$fpdf,$name,$agent,$date,$desc,$title,$emp,$street,$city,$state,$zip,$dob,$notes,$location,$attachments)
 	{
 		$fpdf->AddPage();
 		
@@ -349,8 +350,7 @@ class Pdf extends CI_Controller {
 
 		$fpdf->Cell($width,5,"Interviewee: ".$name,0,2,'L',FALSE);
 
-		// TODO: Warning Docs
-
+		//Warning Docs
 
 		$fpdf->Cell($width,5,"DOB: ".$dob,0,2,'L',FALSE);
 		$fpdf->Cell($width,5,"Title: ".$title,0,2,'L',FALSE);
@@ -366,7 +366,7 @@ class Pdf extends CI_Controller {
 
 		$fpdf->Line(10, 71, $width-10, 71);
 
-		// TODO: Format Notes
+		//Format Notes
 		//$breaks = array("<br />","<br>","<br/>");
     	//$text = str_ireplace($breaks, "\r\n", $notes);
 		//$contents = strip_tags($text);
@@ -385,22 +385,16 @@ class Pdf extends CI_Controller {
 		$fpdf->SetY(74);
 		$fpdf->MultiCell($width,4,$contents,0,'L', FALSE);
 
-		
-
-		// TODO: Attachments for Interview
-
-		/*
-		
 		if(count($attachments) > 0) {
-			$fpdf->Cell($width,10,"Attachments:",0,2,'c',FALSE);
+			$fpdf->SetFont('Arial','B',12);
+			$fpdf->Cell($width,10,"Included Files:",0,2,'c',FALSE);
+			$fpdf->SetFont('Arial','',12);
 			foreach ($attachments as $att) {
 				$doc_name = $att['attachment_name'];
-				$id = $att['id'];
 				$url = $att["location"];
-				$fpdf->Cell($width,5,$doc_name." [".$id."]",0,2,'L',FALSE,$url);
+				$fpdf->Cell($width,5,$doc_name,0,2,'L',FALSE,$url);
 			}
 		}
-		*/
 
 		$fpdf->SetFont('Arial','B',9);
 		$fpdf->SetXY(190, 270);
