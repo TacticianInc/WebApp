@@ -10,7 +10,7 @@ class Welcome extends CI_Controller {
 
 		$email_session = $this->session->userdata('email');
 		if (isset($email_session) && strlen($email_session) > 0) {
-			redirect(site_url("cases"), 'refresh');
+			redirect(site_url("mycases"), 'refresh');
 		}
 
 		$is_valid_captcha = FALSE;
