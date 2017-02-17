@@ -889,7 +889,7 @@ class Report extends CI_Model {
     {
         $ret_value = FALSE;
 
-        $this->load->library('DocXConversion');
+        $this->load->library('DocxConversion');
         $this->load->library('PdfParser');
 
         $fileArray = pathinfo($file);

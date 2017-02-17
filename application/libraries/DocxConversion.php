@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class DocxConversion{
+class DocxConversion {
     private $filename;
 
     //public function __construct() {
