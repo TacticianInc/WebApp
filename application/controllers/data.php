@@ -362,11 +362,17 @@ class Data extends CI_Controller {
 		}
 
 		$user_id = $this->input->post('userid'); //must be int
-		$company_id = $this->input->post('compid'); //must be int
+		//$company_id = $this->input->post('compid'); //must be int
+		$case_id = $this->input->post('caseid');
 
 		if (!isset($user_id) || $user_id == FALSE) {
 			$this->output->set_status_header('400');
 			exit('User not found.');
+		}
+
+		if (!isset($case_id) || $case_id == FALSE) {
+			$this->output->set_status_header('400');
+			exit('Case not found.');
 		}
 
 		$this->load->model('Cases');
@@ -374,44 +380,33 @@ class Data extends CI_Controller {
 		$this->load->model('Attachment');
 		$this->load->model('Interview');
 
+		// convert case id to int
+		$cid = $this->Cases->get_caseid_by_md5($case_id);
+
 		// load available team
-		$db_result = $this->Cases->get_cases($company_id, $user_id, TRUE);
-		if ($db_result['result']) {
+		$cats = array();
+		$atts = array();
+		$ints = array();
 
-			$cats = array();
-			$atts = array();
-			$ints = array();
+		$db_bill_result = $this->Billing->view_categories();
 
-			$db_bill_result = $this->Billing->view_categories();
-
-			if ($db_bill_result['result']) {
-				$cats = $db_bill_result['cats'];
-			}
-
-			$db_atts_result = $this->Attachment->load_docs_by_user($user_id);
-
-			if ($db_atts_result['result']) {
-				$atts = $db_atts_result['docs'];
-			}
-
-			$db_int_result = $this->Interview->load_interviews_user($user_id);
-			if ($db_int_result['result']) {
-				$ints = $db_int_result['interviews'];
-			}
-
-			$this->output->set_status_header('200');
-			echo "{\"result\":".$db_result['result'].",\"cases\":".json_encode($db_result['cases']).",\"cats\":".json_encode($cats).",\"atts\":".json_encode($atts).",\"interviews\":".json_encode($ints)."}";
-
-		}else{
-			// determine if user error or server error
-			if (strlen($db_result['message']) > 0) {
-				$this->output->set_status_header('400');
-				exit($db_result['message']);
-			} else {
-				$this->output->set_status_header('500');
-				exit('Unable to load interviews.');
-			}
+		if ($db_bill_result['result']) {
+			$cats = $db_bill_result['cats'];
 		}
+
+		$db_atts_result = $this->Attachment->load_docs_by_user($user_id,$case_id);
+
+		if ($db_atts_result['result']) {
+			$atts = $db_atts_result['docs'];
+		}
+
+		$db_int_result = $this->Interview->load_interviews_user($user_id,$case_id);
+		if ($db_int_result['result']) {
+			$ints = $db_int_result['interviews'];
+		}
+
+		$this->output->set_status_header('200');
+		echo "{\"result\":1,\"cats\":".json_encode($cats).",\"atts\":".json_encode($atts).",\"interviews\":".json_encode($ints)."}";
 	}
 
 	public function interviews()

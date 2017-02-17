@@ -2,7 +2,7 @@
 
 class Attachment extends CI_Model {
 
-	public function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
@@ -28,12 +28,14 @@ class Attachment extends CI_Model {
 
         if (strlen($case_id) > 10) {
             $case_response = $this->get_id_md5($case_id);
+
             if($case_response['result']) {
                 $case_id = $case_response['id'];
             } else {
                 $ret_value['message'] = "No case found.";
                 return $ret_value;
             }
+
         } elseif(!isset($case_id) || $case_id == 0) {
 
             $ret_value['message'] = "No case found.";
@@ -117,7 +119,7 @@ class Attachment extends CI_Model {
         return $ret_value;
     }
 
-    public function load_docs_by_user($user_id)
+    public function load_docs_by_user($user_id,$case_id=0)
     {
         $ret_value = array('result' => FALSE, 'message' => '', 'docs' => array());
 
@@ -131,6 +133,11 @@ class Attachment extends CI_Model {
         $sql = $sql." LEFT JOIN `user_info` ON `user_info`.`user_id` = `attachments`.`user_id`";
         $sql = $sql." WHERE `attachments`.`user_id`=".$this->db->escape($user_id);
         $sql = $sql." AND `interview_id` = 0";
+
+        if($case_id > 0) {
+            $sql = $sql." AND `case_id` = ".$this->db->escape($case_id);
+        }
+
         $sql = $sql." ORDER BY `attachments`.`name` ASC;";
 
         $query = $this->db->query($sql);

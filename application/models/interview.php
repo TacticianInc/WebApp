@@ -2,7 +2,7 @@
 
 class Interview extends CI_Model {
 
-	public function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
@@ -111,7 +111,7 @@ class Interview extends CI_Model {
      * @param int $case_id
      * @return array
      */
-    function load_interviews_user($user_id)
+    function load_interviews_user($user_id,$case_id=0)
     {
         $ret_value = array('result' => FALSE, 'message' => '', 'interviews' => array());
 
@@ -126,6 +126,10 @@ class Interview extends CI_Model {
         $sql = $sql." FROM `interview`";
         $sql = $sql." LEFT JOIN `user_info` ON `user_info`.`user_id` = `interview`.`user_id`";
         $sql = $sql." WHERE `interview`.`user_id`=".$this->db->escape($user_id);
+
+        if($case_id > 0) {
+            $sql = $sql." AND `case_id` = ".$this->db->escape($case_id);
+        }
 
         $query = $this->db->query($sql);
 

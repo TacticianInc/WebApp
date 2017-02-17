@@ -24,7 +24,6 @@ class Pdf extends CI_Controller {
 		if(!isset($report_id) || strlen($report_id) == 0){
 			redirect(site_url(''), 'refresh');
 		}
-
 		
 		$report_response = $this->Report->gen_report_data($report_id, $user_id);
 		if($report_response['result'] == FALSE) {
@@ -99,18 +98,34 @@ class Pdf extends CI_Controller {
 
 		$fpdf->SetY(20);
 		$fpdf->SetFont('Arial','',12);
-		$fpdf->Cell($width,5,'This document contains sensitive information as outlined in the following documents.',0,2,'L',FALSE);
+		$fpdf->Cell($width,5,'This document contains sensitive information. Please read the following warnings before continuing.',0,2,'L',FALSE);
 		//Before continuing, be sure to read each document listed below.
 
-		$fpdf->SetFont('Arial','B',14);
+		$fpdf->SetFont('Arial','',12);
 		$fpdf->SetY(30);
+
 		if(count($documents) > 0) {
+
+			$count = 0;
+
 			foreach ($documents as $doc) {
-				$doc_name = $doc["name"];
-				$mime = $doc["mime"];
-				$url = $doc["location"];
-				$fpdf->Cell($width,7,$doc_name." [".$mime."]",0,2,'L',FALSE,$url);
+				$count = $count+1;
+
+				$doc_text = $doc['text'];
+
+				$fpdf->MultiCell($width,4,$doc_text,0,'L', FALSE);
+				//$fpdf->MultiCell($width,3,$doc_text,0,2,'L',FALSE);
+				$fpdf->Cell($width,5,"",0,2,'L',FALSE); // space between
+
+				if ($count < count($documents)) {
+					$fpdf->SetFont('Arial','B',9);
+					$fpdf->SetXY(190, 270);
+					// Now we display our page number using the Cell function.
+					$fpdf->Cell($width, 4, 'Page ' . $fpdf->PageNo(), 0, 1);
+				}
+
 			}
+			
 		}
 
 		$fpdf->SetFont('Arial','B',9);
@@ -227,7 +242,7 @@ class Pdf extends CI_Controller {
 				$fpdf->Cell($width,5,$sup_addr,0,2,'L',FALSE);
 				$fpdf->Cell($width,5,$sup_email,0,2,'L',FALSE);
 				$fpdf->Cell($width,7,$sup_phone,0,2,'L',FALSE);
-
+				$fpdf->Cell($width,5,"",0,2,'L',FALSE); // space between
 			}
 		}
 
@@ -249,19 +264,27 @@ class Pdf extends CI_Controller {
 		$contents = "";
 		$name = "";
 
-		$synopsis = $case["synopsis"];
-		if(isset($synopsis["contents"])){
-			$contents = $synopsis["contents"];
-			$name = $synopsis["name"];
-		}
+		//$synopsis = $case["synopsis"];
+		//if(isset($synopsis["contents"])){
+		//	$contents = $synopsis["contents"];
+		//	$name = $synopsis["name"];
+		//}
 		
 		$fpdf->SetFont('Arial','',11);
 
-		// TODO: Format Synopsis
-		$breaks = array("<br />","<br>","<br/>");
-    	$text = str_ireplace($breaks, "\r\n", $contents);
-		$contents = strip_tags($text);
+		$synopsis = $case["synopsis"];
 
+		if (isset($synopsis["synopsis_text"]) > 0) {
+			$fpdf->SetY(20);
+			$fpdf->MultiCell($width,4,$synopsis["synopsis_text"],0,'L', FALSE);
+		}
+
+		// TODO: Format Synopsis
+		//$breaks = array("<br />","<br>","<br/>");
+    	//$text = str_ireplace($breaks, "\r\n", $contents);
+		//$contents = strip_tags($text);
+
+		/*
 		if (strlen($contents) > 0) {
 			$fpdf->SetY(20);
 			$fpdf->MultiCell($width,4,$contents,0,'L', FALSE);
@@ -271,6 +294,7 @@ class Pdf extends CI_Controller {
 			$url = $synopsis["location"];
             $fpdf->Cell($width,5,'Attached File: '.$name,0,2,'L',FALSE,$url);
 		}
+		*/
 
 		$fpdf->SetFont('Arial','B',9);
 		$fpdf->SetXY(190, 270);
@@ -373,6 +397,7 @@ class Pdf extends CI_Controller {
 
 		$contents = "";
 
+		/*
 		if(isset($notes) && strlen($notes) > 0) {
 			$note_json = json_decode($notes);
 			//var_dump($note_json->ops[0]->insert);
@@ -380,12 +405,14 @@ class Pdf extends CI_Controller {
 				$contents = $note_json->ops[0]->insert;
 			}
 		}
+		*/
 
 		$fpdf->SetFont('Arial','',10);
 		$fpdf->SetY(74);
-		$fpdf->MultiCell($width,4,$contents,0,'L', FALSE);
+		$fpdf->MultiCell($width-20,4,$notes,0,'L', FALSE);
 
 		if(count($attachments) > 0) {
+			$fpdf->Cell($width,5,"",0,2,'L',FALSE); // space
 			$fpdf->SetFont('Arial','B',12);
 			$fpdf->Cell($width,10,"Included Files:",0,2,'c',FALSE);
 			$fpdf->SetFont('Arial','',12);

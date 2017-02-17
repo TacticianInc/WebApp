@@ -131,6 +131,7 @@ class Add extends CI_Controller {
 		$user_id = $this->input->post('userid');
 		$case_id = $this->input->post('caseid');
 		$name = $this->input->post('name');
+		$redact_text = $this->input->post('redact');
 
 		if (!isset($user_id) || $user_id == FALSE) {
 			$this->output->set_status_header('400');
@@ -150,7 +151,7 @@ class Add extends CI_Controller {
 		// get int for md5 of case id
 		$cid = $this->Cases->get_caseid_by_md5($case_id);
 
-		$db_result = $this->Report->add_new_report($user_id,$cid,$name);
+		$db_result = $this->Report->add_new_report($user_id,$cid,$name,$redact_text);
 		if ($db_result['result']) {
 
 			$this->output->set_status_header('200');
@@ -833,6 +834,7 @@ class Add extends CI_Controller {
 
 		$this->load->model('Attachment');
 		$this->load->model('User');
+		$this->load->model('Cases');
 
 		$case_id = $this->input->post('caseid');
 		$user_id = $this->input->post('uid');
@@ -861,6 +863,9 @@ class Add extends CI_Controller {
 		// convert user_id from md5
 		$uid = $this->User->get_userid_by_md5($user_id);
 
+		// convert case_id from md5
+		$cid = $this->Cases->get_caseid_by_md5($case_id);
+
 		// set path (root/docs)
 		$path_to_save = FCPATH."docs/";
 
@@ -884,7 +889,7 @@ class Add extends CI_Controller {
 			$tags = $doc['tags'];
 			$title = $doc['title'];
 
-			$doc_result = $this->Attachment->add_new_document($case_id, $uid, $int_id, $path_to_save, $file_contents, $size, $type, $name, $tags, $title);
+			$doc_result = $this->Attachment->add_new_document($cid, $uid, $int_id, $path_to_save, $file_contents, $size, $type, $name, $tags, $title);
 			if ($doc_result['result'] == FALSE) {
 				// determine if user error or server error
 				if (strlen($doc_result['message']) > 0) {

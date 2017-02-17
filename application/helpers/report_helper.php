@@ -227,8 +227,17 @@ if (!function_exists('report_script'))
 
                 $script = $script."retValue+='<hr>';";
 
-                // redaction
-                //$script = $script."retValue+='<p>Redaction Settings.</p>';";
+                $script = $script."retValue+='<p>Include any Word or Phrase you want to redact from the report seperated by a comma. (EX: Bob Wood, Smithfield Elementary)</p>';";
+
+                $script = $script."retValue+='<div id=\"redact-group\">';";
+                    $script = $script."retValue+='<div class=\"form-group\">';";
+                    $script = $script."retValue+='<div class=\"col-sm-12\">';";
+                    $script = $script."retValue+='<textarea class=\"form-control\" id=\"txtredact\" placeholder=\"Redact Word or Phrase\"></textarea>';";
+                    $script = $script."retValue+='</div>';";
+                    $script = $script."retValue+='</div>';";
+                $script = $script."retValue+='</div>';";
+
+                $script = $script."retValue+='<hr>';";
 
                 $script = $script."retValue+='<div class=\"form-group\">';";
                 $script = $script."retValue+='<div class=\"col-sm-12\" style=\"text-align:right;\">';";
@@ -281,8 +290,9 @@ if (!function_exists('report_script'))
                         // save report
                         $script = $script."var cid='".$case_id."';";
                         $script = $script."var nme=$('#name').val();";
+                        $script = $script."var rdtxt=$('#txtredact').val();";
 
-                        $script = $script."var data = {caseid:cid,userid:uid,name:nme};";
+                        $script = $script."var data = {caseid:cid,userid:uid,name:nme,redact:rdtxt};";
                         $script = $script."postData('".site_url("add/add_report")."',data,btn,function(res){";
                         $script = $script."if(res.result){";
 
@@ -306,7 +316,7 @@ if (!function_exists('report_script'))
                 $script = $script."var cnfdel = confirm('Delete: Are you sure?');";
                 $script = $script."if (cnfdel == true) {";
                     $script = $script."var repid=$(this).attr('rid');";
-                    $script = $script."var cid=$('#selCase :selected').attr('id');";
+                    $script = $script."var cid='".$case_id."';";
                     $script = $script."var data = {report_id:repid};";
                     $script = $script."postData('".site_url("edit/delete_report")."',data,null,function(res){";
                     $script = $script."if(res.result){";

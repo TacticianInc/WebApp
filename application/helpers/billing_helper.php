@@ -620,13 +620,13 @@ if (isset($is_admin) && ($is_admin == 1 || $is_admin == TRUE)) {
             $script = $script."$('#btnAddNewExpense').on('click', function(e){";
                 $script = $script."e.preventDefault();";
 
+                $script = $script."var cid='".$case_id."';";
                 $script = $script."var uid='".$user_id."';";
                 $script = $script."var cmid='".$company_id."';";
-                $script = $script."var data = {userid:uid,compid:cmid};";
+                $script = $script."var data = {userid:uid,compid:cmid,caseid:cid};";
                 $script = $script."postData('".site_url("data/cases_cats_atts_ints")."',data,null,function(res){";
                     $script = $script."if(res.result){";
 
-                        $script = $script."var cases=res.cases;";
                         $script = $script."var cats=res.cats;";
                         $script = $script."var atts=res.atts;";
                         $script = $script."var ints=res.interviews;";
